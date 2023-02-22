@@ -1,71 +1,34 @@
+// engine ,world , Bodies ,body 
+
 const Engine = Matter.Engine;
-const World = Matter.World;
-const Bodies = Matter.Bodies;
-const Body = Matter.Body;
-
-var ball,groundObj,leftSide,rightSide;
-var world;
-var radius = 70;
-
-function preload(){
-//find the bug in the below code
-	dustbinImg = addImage("dustbin.png");
-	paperImg = addImage("paper.png");
-
-}
-
-
-function setup() {
-	createCanvas(1600, 700);
-	rectMode(CENTER);
-
-	engine = Engine.create();
-	world = engine.world;
-
-	var ball_options={
-		isStatic:false,
-		restitution:0.3,
-		density:0.4
-	}
-
-	ball = Bodies.circle(260,100,radius/2.6,ball_options);
-	World.add(world,ball);
-
-	ground=new Ground(width/2,670,width,20);
-	leftSide = new Ground(1100,600,10,120);
-	rightSide = new Ground(1270,600,10,120);
-	bottomSide = new Ground(1185,650,150,20);
-
-	Engine.run(engine);
-  
-}
-
-
-function draw() {
-	background(200);
-	rectMode(CENTER);
-
-
-	ground.display();
-	leftSide.display();  
-	rightSide.display();
-	bottomSide.display();
-
-	
-	imageMode(CENTER);
-		//use image() command to add paper image to the ball
-image(ball.position.x,ball.position.y,radius,radius);
-
-	// use image() command to add dustbin image in the canvas.
-	image(1185, 570, 200,200);
-	
-
-}
-
-function keyPressed() {
-  	if (keyCode === UP_ARROW) {
-
-		Matter.Body.applyForce(ball,ball.position,{x:85,y:-85});
+ const World = Matter.World;
+  const Bodies = Matter.Bodies; 
+  const Body = Matter.Body;
+   function setup() {
+     createCanvas(400,400);
     
-  	}
-}
+     // engine i have created and kept in bigger engine
+      engine = Engine.create();
+       // im putting this world inside the engine which i have made 
+       world = engine.world;
+        // creating ball with properties 
+        var ball_options = { restitution: 0.95, 
+          frictionAir:0.01 }
+           var ground_options ={ isStatic: true };
+            // creating fground 
+            ground = Bodies.rectangle(100,400,400,20,ground_options);//(x,y , w,h , properties)
+             // ground adding in the world 
+             World.add(world,ground);
+              // craete ball
+               ball = Bodies.circle(100,10,20,ball_options);// (x , y , r , properties) 
+               // adding ball inside world 
+               World.add(world,ball); // ground mode
+                rectMode(CENTER); // circle mode 
+                ellipseMode(RADIUS); }
+                 function draw() {
+                   background(51); 
+                   // update of engine
+                    Engine.update(engine);
+ellipse(ball.position.x,ball.position.y,20);
+rect(ground.position.x,ground.position.y,500,20);
+                 }
